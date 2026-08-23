@@ -1,0 +1,48 @@
+{
+  "name": "project-bootstrap",
+  "version": "0.0.1",
+  "description": "Software Project Operating Foundation - create, configure, validate, and evolve software repositories with consistent engineering practices.",
+  "type": "module",
+  "bin": {
+    "project-bootstrap": "dist/cli/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/copy-templates.mjs",
+    "dev": "tsx src/cli/index.ts",
+    "start": "node dist/cli/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.2",
+    "vite": "^6.4.3",
+    "vitest": "^4.1.11"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alpinnz/project-bootstrap.git"
+  },
+  "homepage": "https://github.com/alpinnz/project-bootstrap",
+  "keywords": [
+    "project",
+    "bootstrap",
+    "foundation",
+    "engineering",
+    "agent",
+    "cli"
+  ]
+}

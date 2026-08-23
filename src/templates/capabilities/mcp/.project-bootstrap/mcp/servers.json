@@ -1,0 +1,4 @@
+{
+  "comment": "Mcp capability. Default posture is READ ONLY, project-scoped, least privilege.",
+  "servers": []
+}
