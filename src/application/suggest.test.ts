@@ -31,10 +31,7 @@ describe('suggestImprovements', () => {
 
   it('produces no foundation suggestion for a bootstrapped repo', async () => {
     await fs.mkdir(path.join(dir, '.project-bootstrap'), { recursive: true });
-    await fs.writeFile(
-      path.join(dir, '.project-bootstrap', 'constitution.md'),
-      '# Constitution\n',
-    );
+    await fs.writeFile(path.join(dir, '.project-bootstrap', 'constitution.md'), '# Constitution\n');
     await fs.writeFile(path.join(dir, '.project-bootstrap', 'project.yml'), 'proj: {}\n');
     await fs.writeFile(path.join(dir, 'AGENTS.md'), '# Agents\n');
     // Also silence manifest/lockfile/tests suggestions partially.

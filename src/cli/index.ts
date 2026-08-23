@@ -67,7 +67,10 @@ program
   .action(async (dir: string, opts: { dryRun?: boolean; capabilities?: string }) => {
     const targetDir = dir;
     const caps = opts.capabilities
-      ? opts.capabilities.split(',').map((s) => s.trim()).filter(Boolean)
+      ? opts.capabilities
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
       : undefined;
     const result = await createProject({ targetDir, dryRun: opts.dryRun, capabilities: caps });
     console.log(result.planText);
@@ -86,26 +89,31 @@ program
   .option('--dry-run', 'show the plan without applying it')
   .option('--force', 'overwrite existing files with templates (safe default skips)')
   .option('--capabilities <ids>', 'comma-separated capability ids to enable (mcp,testing,speckit)')
-  .action(async (dir: string, opts: { dryRun?: boolean; force?: boolean; capabilities?: string }) => {
-    const caps = opts.capabilities
-      ? opts.capabilities.split(',').map((s) => s.trim()).filter(Boolean)
-      : undefined;
-    const result = await initializeProject({
-      root: dir,
-      dryRun: opts.dryRun,
-      force: opts.force,
-      capabilities: caps,
-    });
-    console.log(result.planText);
-    if (result.dryRun) {
-      console.log('Dry run — nothing was applied.');
-      return;
-    }
-    const report = result.report!;
-    console.log(
-      `Applied: ${report.applied}  Created: ${report.created.length}  Updated: ${report.updated.length}  Skipped: ${report.skipped}  Conflicts: ${report.conflicted}`,
-    );
-  });
+  .action(
+    async (dir: string, opts: { dryRun?: boolean; force?: boolean; capabilities?: string }) => {
+      const caps = opts.capabilities
+        ? opts.capabilities
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : undefined;
+      const result = await initializeProject({
+        root: dir,
+        dryRun: opts.dryRun,
+        force: opts.force,
+        capabilities: caps,
+      });
+      console.log(result.planText);
+      if (result.dryRun) {
+        console.log('Dry run — nothing was applied.');
+        return;
+      }
+      const report = result.report!;
+      console.log(
+        `Applied: ${report.applied}  Created: ${report.created.length}  Updated: ${report.updated.length}  Skipped: ${report.skipped}  Conflicts: ${report.conflicted}`,
+      );
+    },
+  );
 
 program
   .command('inspect')
@@ -196,9 +204,7 @@ program
     }
   });
 
-const mcp = program
-  .command('mcp')
-  .description('MCP strategy and server configuration');
+const mcp = program.command('mcp').description('MCP strategy and server configuration');
 
 mcp
   .command('catalog')
@@ -234,29 +240,23 @@ program
   .argument('[dir]', 'project root', '.')
   .option('--dry-run', 'show the plan without applying it')
   .option('--force', 'overwrite existing files from the capability overlay')
-  .action(
-    async (
-      capability: string,
-      dir: string,
-      opts: { dryRun?: boolean; force?: boolean },
-    ) => {
-      const result = await addCapability({
-        root: dir,
-        capability,
-        dryRun: opts.dryRun,
-        force: opts.force,
-      });
-      console.log(result.planText);
-      if (result.dryRun) {
-        console.log('Dry run — nothing was applied.');
-        return;
-      }
-      const report = result.report!;
-      console.log(
-        `Applied: ${report.applied}  Created: ${report.created.length}  Updated: ${report.updated.length}  Skipped: ${report.skipped}  Conflicts: ${report.conflicted}`,
-      );
-    },
-  );
+  .action(async (capability: string, dir: string, opts: { dryRun?: boolean; force?: boolean }) => {
+    const result = await addCapability({
+      root: dir,
+      capability,
+      dryRun: opts.dryRun,
+      force: opts.force,
+    });
+    console.log(result.planText);
+    if (result.dryRun) {
+      console.log('Dry run — nothing was applied.');
+      return;
+    }
+    const report = result.report!;
+    console.log(
+      `Applied: ${report.applied}  Created: ${report.created.length}  Updated: ${report.updated.length}  Skipped: ${report.skipped}  Conflicts: ${report.conflicted}`,
+    );
+  });
 
 program
   .command('speckit')
@@ -265,8 +265,12 @@ program
   .action(async (dir: string) => {
     const report = await inspectSpecKit({ root: dir, fs });
     console.log('Spec Kit Integration');
-    console.log(`${report.enabled ? '✓' : '-'} Capability: ${report.enabled ? 'enabled' : 'not detected'}`);
-    console.log(`${report.specsDir ? '✓' : '-'} specs/ directory: ${report.specsDir ? 'present' : 'absent'}`);
+    console.log(
+      `${report.enabled ? '✓' : '-'} Capability: ${report.enabled ? 'enabled' : 'not detected'}`,
+    );
+    console.log(
+      `${report.specsDir ? '✓' : '-'} specs/ directory: ${report.specsDir ? 'present' : 'absent'}`,
+    );
     console.log(`  ${report.summary}`);
   });
 
@@ -278,7 +282,9 @@ program
     const report = await analyzeProject({ root: dir, fs });
     console.log('Architecture Analysis');
     console.log(`Language: ${report.tooling.language}   Framework: ${report.tooling.framework}`);
-    console.log(`Runtime: ${report.tooling.runtime}   Package manager: ${report.tooling.packageManager}`);
+    console.log(
+      `Runtime: ${report.tooling.runtime}   Package manager: ${report.tooling.packageManager}`,
+    );
     console.log(`Foundation: ${report.foundationPresent ? 'present' : 'missing'}`);
     console.log('');
     console.log('Top-level structure:');

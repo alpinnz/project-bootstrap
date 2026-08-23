@@ -1,0 +1,8 @@
+dist
+node_modules
+src/templates
+coverage
+package-lock.json
+publish.md
+plan.md
+LICENSE

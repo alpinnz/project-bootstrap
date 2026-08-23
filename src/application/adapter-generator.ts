@@ -22,9 +22,7 @@ export interface AdapterResult {
 }
 
 /** Generate the content for an adapter without writing. */
-export async function generateAdapterContext(
-  options: AdapterOptions,
-): Promise<AdapterResult> {
+export async function generateAdapterContext(options: AdapterOptions): Promise<AdapterResult> {
   const adapter = getAdapter(options.adapter);
   const content = await adapter.buildContext(options.project);
   return { adapter: options.adapter, targetFile: ADAPTER_FILE[options.adapter], content };

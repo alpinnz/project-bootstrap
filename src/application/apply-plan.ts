@@ -34,8 +34,7 @@ export async function applyPlan(
   fsImpl: FileSystem,
 ): Promise<ApplyReport> {
   const root = typeof project === 'string' ? project : project.root;
-  const capabilities =
-    typeof project === 'string' ? [] : enabledCapabilities(project);
+  const capabilities = typeof project === 'string' ? [] : enabledCapabilities(project);
 
   const report: ApplyReport = {
     applied: 0,
@@ -74,10 +73,7 @@ export async function applyPlan(
   return report;
 }
 
-function readSource(
-  entry: PlanEntry,
-  capabilities: readonly string[],
-): string | null {
+function readSource(entry: PlanEntry, capabilities: readonly string[]): string | null {
   if (entry.content !== undefined) return entry.content;
   return readComposedFile(entry.path, capabilities);
 }

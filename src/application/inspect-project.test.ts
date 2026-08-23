@@ -4,9 +4,7 @@ import { mergeRequestedCapabilities } from './inspect-project.js';
 
 describe('mergeRequestedCapabilities', () => {
   it('merges requested capabilities into the detected set', () => {
-    const detected: ProjectContext['capabilities'] = [
-      { id: 'base', enabled: true },
-    ];
+    const detected: ProjectContext['capabilities'] = [{ id: 'base', enabled: true }];
     const merged = mergeRequestedCapabilities(detected, ['testing', 'mcp']);
     const ids = merged.map((c) => c.id).sort();
     expect(ids).toEqual(['base', 'mcp', 'testing']);

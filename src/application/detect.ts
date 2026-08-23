@@ -4,11 +4,7 @@
  * detection is best-effort and never throws.
  */
 import * as path from 'node:path';
-import type {
-  DetectedTooling,
-  PackageManager,
-  Runtime,
-} from '../domain/project-context.js';
+import type { DetectedTooling, PackageManager, Runtime } from '../domain/project-context.js';
 import type { FileSystem } from '../infrastructure/filesystem.js';
 
 export interface DetectionInput {
@@ -61,7 +57,11 @@ async function detectPackageManager(
   return 'unknown';
 }
 
-function detectRuntime(hasGoMod: boolean, hasBunLock: boolean, manifest: PackageManifest | null): Runtime {
+function detectRuntime(
+  hasGoMod: boolean,
+  hasBunLock: boolean,
+  manifest: PackageManifest | null,
+): Runtime {
   if (hasGoMod) return 'go';
   if (hasBunLock || manifest?.packageManager?.startsWith('bun')) return 'bun';
   if (manifest) return 'node';

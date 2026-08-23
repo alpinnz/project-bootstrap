@@ -28,9 +28,7 @@ export function runQualityGates(options: QualityGateOptions): QualityGateResult 
 export function renderGateChecklist(evaluations: readonly GateEvaluation[]): string {
   const lines: string[] = ['Quality Gates'];
   for (const evaluation of evaluations) {
-    lines.push(
-      `${evaluation.applied ? '✓' : '-'} ${evaluation.gate.name} — ${evaluation.reason}`,
-    );
+    lines.push(`${evaluation.applied ? '✓' : '-'} ${evaluation.gate.name} — ${evaluation.reason}`);
     if (evaluation.applied) {
       for (const check of evaluation.gate.checks) {
         lines.push(`    • ${check}`);

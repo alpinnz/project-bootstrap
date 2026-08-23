@@ -22,9 +22,7 @@ export interface McpOptions {
 }
 
 /** Read the project's MCP server configuration (.project-bootstrap/mcp/servers.json). */
-export async function readMcpConfig(
-  options: McpOptions,
-): Promise<McpProjectConfig> {
+export async function readMcpConfig(options: McpOptions): Promise<McpProjectConfig> {
   const cfg = await options.fs.readJson<McpProjectConfig>(
     path.join(options.root, '.project-bootstrap', 'mcp', 'servers.json'),
   );

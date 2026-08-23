@@ -27,10 +27,7 @@ describe('runDoctor', () => {
   });
 
   it('reports a not-quite-ready repo as attention (manifest, no scripts)', async () => {
-    await fs.writeFile(
-      path.join(dir, 'package.json'),
-      JSON.stringify({ name: 'app' }),
-    );
+    await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'app' }));
     const report = await runDoctor({ root: dir, fs: fsImpl });
     // Missing AGENTS/constitution -> unhealthy regardless of dev warnings.
     expect(report.health).toBe('unhealthy');
@@ -44,14 +41,8 @@ describe('runDoctor', () => {
     await fs.writeFile(path.join(dir, '.gitignore'), '.env\nnode_modules\n');
     await fs.mkdir(path.join(dir, '.project-bootstrap'), { recursive: true });
     await fs.writeFile(path.join(dir, 'AGENTS.md'), '# Agents\n');
-    await fs.writeFile(
-      path.join(dir, '.project-bootstrap', 'constitution.md'),
-      '# Constitution\n',
-    );
-    await fs.writeFile(
-      path.join(dir, '.project-bootstrap', 'project.yml'),
-      'project: {}\n',
-    );
+    await fs.writeFile(path.join(dir, '.project-bootstrap', 'constitution.md'), '# Constitution\n');
+    await fs.writeFile(path.join(dir, '.project-bootstrap', 'project.yml'), 'project: {}\n');
     const report = await runDoctor({ root: dir, fs: fsImpl });
     const security = report.categories.find((c) => c.title === 'Security')!;
     const secretsIgnored = security.checks.find((c) => c.name === 'Secrets ignored')!;

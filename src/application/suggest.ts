@@ -41,8 +41,7 @@ export async function suggestImprovements(options: SuggestOptions): Promise<Sugg
   ]);
 
   // Foundation.
-  const foundationCheck = doctor.categories
-    .find((c) => c.title === 'Foundation')?.checks ?? [];
+  const foundationCheck = doctor.categories.find((c) => c.title === 'Foundation')?.checks ?? [];
   const missingAgents = foundationCheck.find((c) => c.name === 'AGENTS.md')?.status === 'fail';
   const missingConstitution =
     foundationCheck.find((c) => c.name === 'Constitution')?.status === 'fail';
@@ -92,8 +91,7 @@ export async function suggestImprovements(options: SuggestOptions): Promise<Sugg
   }
 
   // Security.
-  const securityCheck = doctor.categories
-    .find((c) => c.title === 'Security')?.checks ?? [];
+  const securityCheck = doctor.categories.find((c) => c.title === 'Security')?.checks ?? [];
   const secretsNotIgnored =
     securityCheck.find((c) => c.name === 'Secrets ignored')?.status === 'warning';
   if (secretsNotIgnored || !(await fs.exists(path.join(root, '.gitignore')))) {
@@ -111,7 +109,8 @@ export async function suggestImprovements(options: SuggestOptions): Promise<Sugg
       id: 'structure',
       severity: 'low',
       title: 'Document repository structure',
-      detail: 'No obvious entry point detected. Add a README structure section or architecture doc.',
+      detail:
+        'No obvious entry point detected. Add a README structure section or architecture doc.',
     });
   }
 
@@ -124,9 +123,7 @@ export function renderSuggestions(report: SuggestReport): string {
   }
   const lines: string[] = ['Repository Suggestions', ''];
   const order = { critical: 0, high: 1, medium: 2, low: 3 } as const;
-  const sorted = [...report.suggestions].sort(
-    (a, b) => order[a.severity] - order[b.severity],
-  );
+  const sorted = [...report.suggestions].sort((a, b) => order[a.severity] - order[b.severity]);
   for (const suggestion of sorted) {
     lines.push(`[${suggestion.severity.toUpperCase()}] ${suggestion.title}`);
     lines.push(`    ${suggestion.detail}`);

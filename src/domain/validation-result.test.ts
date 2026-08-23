@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  aggregateHealth,
-  renderValidation,
-  type ValidationCategory,
-} from './validation-result.js';
+import { aggregateHealth, renderValidation, type ValidationCategory } from './validation-result.js';
 
 describe('validation result', () => {
   it('aggregates to healthy when all pass', () => {

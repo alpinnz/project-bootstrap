@@ -34,11 +34,7 @@ export const QUALITY_GATES: readonly QualityGate[] = [
     id: 'development',
     name: 'Development Gate',
     default: true,
-    checks: [
-      'Behavior implemented',
-      'Verification executed',
-      'Diff reviewed',
-    ],
+    checks: ['Behavior implemented', 'Verification executed', 'Diff reviewed'],
   },
   {
     id: 'security',
@@ -55,10 +51,7 @@ export const QUALITY_GATES: readonly QualityGate[] = [
     id: 'release',
     name: 'Release Gate',
     default: false,
-    checks: [
-      'Development gate passed',
-      'Security gate passed when applicable',
-    ],
+    checks: ['Development gate passed', 'Security gate passed when applicable'],
   },
 ];
 

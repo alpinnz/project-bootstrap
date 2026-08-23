@@ -43,9 +43,7 @@ describe('initializeProject', () => {
     expect(readme).toBe(userReadme);
     // Foundation files are created.
     expect(await exists(path.join(dir, 'AGENTS.md'))).toBe(true);
-    expect(
-      await exists(path.join(dir, '.project-bootstrap', 'constitution.md')),
-    ).toBe(true);
+    expect(await exists(path.join(dir, '.project-bootstrap', 'constitution.md'))).toBe(true);
   });
 
   it('dry-run does not write any files', async () => {

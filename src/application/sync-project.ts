@@ -50,17 +50,12 @@ export function managedSection(content: string): string {
 }
 
 /** Replace (or insert) a managed section in file content. */
-export function upsertManagedSection(
-  fileContent: string,
-  content: string,
-): string {
+export function upsertManagedSection(fileContent: string, content: string): string {
   const block = managedSection(content);
   const startIdx = fileContent.indexOf(MANAGED_START);
   const endIdx = fileContent.indexOf(MANAGED_END);
   if (startIdx >= 0 && endIdx >= 0 && endIdx > startIdx) {
-    return (
-      fileContent.slice(0, startIdx) + block + fileContent.slice(endIdx + MANAGED_END.length)
-    );
+    return fileContent.slice(0, startIdx) + block + fileContent.slice(endIdx + MANAGED_END.length);
   }
   return `${fileContent}\n\n${block}\n`;
 }

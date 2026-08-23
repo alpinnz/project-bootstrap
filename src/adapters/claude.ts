@@ -30,7 +30,12 @@ export class ClaudeAdapter implements AiAdapter {
       }
     }
     lines.push('', '## Rules', '', 'Follow the engineering rules in `.project-bootstrap/rules/`.');
-    lines.push('', '## Workflow', '', 'Follow the development workflow in `.project-bootstrap/workflows/`.');
+    lines.push(
+      '',
+      '## Workflow',
+      '',
+      'Follow the development workflow in `.project-bootstrap/workflows/`.',
+    );
     return lines.join('\n');
   }
 }

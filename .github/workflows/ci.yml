@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Typecheck + Test + Build
+    name: Lint + Format + Typecheck + Test + Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,6 +20,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
 
       - name: Typecheck
         run: npm run typecheck

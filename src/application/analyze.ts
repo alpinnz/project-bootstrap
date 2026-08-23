@@ -111,7 +111,7 @@ async function readTopLevel(fs: FileSystem, root: string): Promise<TopLevelEntry
   for (const name of names) {
     if (name.startsWith('.') && name !== '.github') continue; // skip hidden
     if (['node_modules', 'dist', 'build', 'out', 'coverage'].includes(name)) continue;
-    const isDir = await fs.isFile(path.join(root, name)) === false;
+    const isDir = (await fs.isFile(path.join(root, name))) === false;
     entries.push({ name, type: isDir ? 'dir' : 'file' });
   }
   // Deterministic ordering.

@@ -17,10 +17,7 @@ export class ProcessRunner {
    * Run a command in cwd. Resolves with success=false on any failure instead
    * of throwing when `tolerant` is true (default).
    */
-  run(
-    command: string,
-    options: { cwd?: string; tolerant?: boolean } = {},
-  ): Promise<CommandResult> {
+  run(command: string, options: { cwd?: string; tolerant?: boolean } = {}): Promise<CommandResult> {
     const { cwd = process.cwd(), tolerant = true } = options;
     return new Promise((resolve) => {
       exec(command, { cwd, timeout: 15000 }, (error, stdout, stderr) => {

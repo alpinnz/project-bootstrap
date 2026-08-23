@@ -7,10 +7,7 @@ import { generateAgentsMd } from '../application/agents-generator.js';
 import type { ProjectContext } from '../domain/project-context.js';
 import type { AiAdapter } from './ai-adapter.js';
 
-function buildPointer(
-  project: ProjectContext,
-  mention: string,
-): string {
+function buildPointer(project: ProjectContext, mention: string): string {
   return [
     `# ${mention}`,
     '',

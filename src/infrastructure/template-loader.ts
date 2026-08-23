@@ -100,10 +100,7 @@ export function composedTemplateFiles(capabilityIds: readonly string[] = []): st
  * Resolve the composed template dir that owns a given relative path for a set
  * of capabilities (the last overlay that provides it wins).
  */
-export function ownerDirFor(
-  rel: string,
-  capabilityIds: readonly string[] = [],
-): string {
+export function ownerDirFor(rel: string, capabilityIds: readonly string[] = []): string {
   let owner = baseDir();
   for (const id of capabilityIds) {
     const dir = capabilityDir(id);
@@ -113,10 +110,7 @@ export function ownerDirFor(
 }
 
 /** Read resolved template content for a relative path under a capability set. */
-export function readComposedFile(
-  rel: string,
-  capabilityIds?: readonly string[],
-): string | null {
+export function readComposedFile(rel: string, capabilityIds?: readonly string[]): string | null {
   const owner = ownerDirFor(rel, capabilityIds);
   const file = path.join(owner, rel);
   try {

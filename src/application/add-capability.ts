@@ -1,8 +1,7 @@
 /**
- * AddCapability use case (plan §8 `add` command): add one capability to an
+ * Add capability use case (plan §8 `add` command): add one capability to an
  * existing project. Only the selected capability overlay is applied, and it is
- * conservative by default (existing files are never overwritten). The project
- * context is updated to reflect the newly enabled capability.
+ * conservative by default (existing files are never overwritten).
  */
 import { promises as nodeFs } from 'node:fs';
 import * as nodePath from 'node:path';
@@ -12,7 +11,6 @@ import { FileSystem } from '../infrastructure/filesystem.js';
 import { GitClient } from '../infrastructure/git.js';
 import { capabilityFiles, readComposedFile } from '../infrastructure/template-loader.js';
 import type { ApplyReport } from './apply-plan.js';
-import { inspectProject, mergeRequestedCapabilities } from './inspect-project.js';
 
 export interface AddCapabilityOptions {
   readonly root: string;
@@ -39,12 +37,6 @@ export async function addCapability(options: AddCapabilityOptions): Promise<AddC
   }
 
   const fs = options.fs ?? new FileSystem();
-  let project = await inspectProject({
-    root: options.root,
-    fs,
-    git: options.git ?? new GitClient(),
-  });
-  project = { ...project, capabilities: mergeRequestedCapabilities(project.capabilities, [options.capability]) };
 
   const plan = await buildCapabilityPlan(options.capability, options.root, options.force, fs);
   const planText = renderPlanText(plan);
@@ -91,11 +83,20 @@ async function applyCapabilityPlan(
   const report: ApplyReport = { applied: 0, skipped: 0, conflicted: 0, created: [], updated: [] };
 
   for (const entry of plan.entries) {
-    if (entry.action === 'skip') { report.skipped += 1; continue; }
-    if (entry.action !== 'create' && entry.action !== 'update') { report.conflicted += 1; continue; }
+    if (entry.action === 'skip') {
+      report.skipped += 1;
+      continue;
+    }
+    if (entry.action !== 'create' && entry.action !== 'update') {
+      report.conflicted += 1;
+      continue;
+    }
 
     const content = readComposedFile(entry.path, [capability]);
-    if (content === null) { report.conflicted += 1; continue; }
+    if (content === null) {
+      report.conflicted += 1;
+      continue;
+    }
 
     const target = repoPath(root, entry.path);
     await fs.ensureDir(nodePath.dirname(target));

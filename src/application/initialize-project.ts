@@ -26,9 +26,7 @@ export interface InitializeResult {
   readonly report?: ApplyReport;
 }
 
-export async function initializeProject(
-  options: InitializeOptions,
-): Promise<InitializeResult> {
+export async function initializeProject(options: InitializeOptions): Promise<InitializeResult> {
   const fs = options.fs ?? new FileSystem();
   let project = await inspectProject({
     root: options.root,
@@ -36,7 +34,10 @@ export async function initializeProject(
     git: options.git ?? new GitClient(),
   });
   if (options.capabilities) {
-    project = { ...project, capabilities: mergeRequestedCapabilities(project.capabilities, options.capabilities) };
+    project = {
+      ...project,
+      capabilities: mergeRequestedCapabilities(project.capabilities, options.capabilities),
+    };
   }
 
   const plan = await generateBootstrapPlan(project, fs, {

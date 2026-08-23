@@ -38,16 +38,13 @@ export function aggregateHealth(categories: readonly ValidationCategory[]): Heal
   return 'healthy';
 }
 
-export function renderValidation(
-  categories: readonly ValidationCategory[],
-): string {
+export function renderValidation(categories: readonly ValidationCategory[]): string {
   const lines: string[] = ['Project Bootstrap Doctor'];
   for (const category of categories) {
     lines.push('');
     lines.push(category.title);
     for (const check of category.checks) {
-      const mark =
-        check.status === 'pass' ? '✓' : check.status === 'fail' ? '✗' : '?';
+      const mark = check.status === 'pass' ? '✓' : check.status === 'fail' ? '✗' : '?';
       lines.push(`${mark} ${check.name}${check.message ? ` — ${check.message}` : ''}`);
     }
   }

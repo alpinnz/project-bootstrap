@@ -35,9 +35,21 @@ export const CONTEXT_LEVELS: ReadonlyArray<{
 
 export const DEFAULT_CONTEXT_REFERENCES: readonly ContextReference[] = [
   { level: 0, key: 'AGENTS.md', description: 'Agent entry point and project overview.' },
-  { level: 0, key: '.project-bootstrap/constitution.md', description: 'Highest project principles.' },
-  { level: 1, key: '.project-bootstrap/workflows/development.md', description: 'Task-scaled development workflow.' },
-  { level: 2, key: '.project-bootstrap/rules/', description: 'Engineering rules (code, architecture, testing, security, ...).' },
+  {
+    level: 0,
+    key: '.project-bootstrap/constitution.md',
+    description: 'Highest project principles.',
+  },
+  {
+    level: 1,
+    key: '.project-bootstrap/workflows/development.md',
+    description: 'Task-scaled development workflow.',
+  },
+  {
+    level: 2,
+    key: '.project-bootstrap/rules/',
+    description: 'Engineering rules (code, architecture, testing, security, ...).',
+  },
   { level: 3, key: 'docs/architecture.md', description: 'Optional architecture documentation.' },
   { level: 3, key: 'docs/development.md', description: 'Development and verification guide.' },
   { level: 4, key: 'MCP', description: 'External knowledge, loaded only when required.' },

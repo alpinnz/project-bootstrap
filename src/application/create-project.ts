@@ -53,7 +53,10 @@ export async function createProject(options: CreateOptions): Promise<CreateResul
     git,
   });
   if (options.capabilities) {
-    project = { ...project, capabilities: mergeRequestedCapabilities(project.capabilities, options.capabilities) };
+    project = {
+      ...project,
+      capabilities: mergeRequestedCapabilities(project.capabilities, options.capabilities),
+    };
   }
 
   const plan = await generateBootstrapPlan(project, fsImpl, { conservative: true });

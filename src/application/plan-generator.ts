@@ -4,11 +4,7 @@
  * represented here; this enables dry-run without applying anything.
  */
 import * as path from 'node:path';
-import {
-  type BootstrapPlan,
-  createPlanEntry,
-  type PlanEntry,
-} from '../domain/bootstrap-plan.js';
+import { type BootstrapPlan, createPlanEntry, type PlanEntry } from '../domain/bootstrap-plan.js';
 import type { ProjectContext } from '../domain/project-context.js';
 import type { FileSystem } from '../infrastructure/filesystem.js';
 import { composedTemplateFiles } from '../infrastructure/template-loader.js';
@@ -38,7 +34,12 @@ export async function generateBootstrapPlan(
 
   if (templateList.length === 0) {
     entries.push(
-      createPlanEntry('.project-bootstrap/', 'conflict', 'No foundation templates found', undefined),
+      createPlanEntry(
+        '.project-bootstrap/',
+        'conflict',
+        'No foundation templates found',
+        undefined,
+      ),
       createPlanEntry('.project-bootstrap/', 'skip', 'Templates unavailable', undefined),
     );
     return { entries };
@@ -49,20 +50,14 @@ export async function generateBootstrapPlan(
     const exists = await fs.exists(targetAbs);
 
     if (!exists) {
-      entries.push(
-        createPlanEntry(rel, 'create', 'Add foundation file from template'),
-      );
+      entries.push(createPlanEntry(rel, 'create', 'Add foundation file from template'));
       continue;
     }
 
     if (options.conservative) {
-      entries.push(
-        createPlanEntry(rel, 'skip', 'Already exists (conservative mode)'),
-      );
+      entries.push(createPlanEntry(rel, 'skip', 'Already exists (conservative mode)'));
     } else {
-      entries.push(
-        createPlanEntry(rel, 'update', 'Refresh managed foundation file'),
-      );
+      entries.push(createPlanEntry(rel, 'update', 'Refresh managed foundation file'));
     }
   }
 

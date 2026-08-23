@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  MCP_CATALOG,
-  MCP_CATEGORIES,
-  getMcpCapability,
-  mcpCapabilitiesByCategory,
-} from './mcp.js';
+import { MCP_CATALOG, MCP_CATEGORIES, getMcpCapability, mcpCapabilitiesByCategory } from './mcp.js';
 
 describe('MCP strategy', () => {
   it('defines the expected categories', () => {

@@ -37,10 +37,7 @@ describe('analyzeProject', () => {
 
   it('reports foundation present when constitution exists', async () => {
     await fs.mkdir(path.join(dir, '.project-bootstrap'), { recursive: true });
-    await fs.writeFile(
-      path.join(dir, '.project-bootstrap', 'constitution.md'),
-      '# Constitution\n',
-    );
+    await fs.writeFile(path.join(dir, '.project-bootstrap', 'constitution.md'), '# Constitution\n');
     const report = await analyzeProject({ root: dir, fs: fsImpl });
     expect(report.foundationPresent).toBe(true);
   });

@@ -22,7 +22,8 @@ export const AGENT_ROLES: readonly AgentRole[] = [
   {
     id: 'planner',
     name: 'Planner',
-    responsibility: 'Understand the requirement, identify affected files, and define the approach and risk.',
+    responsibility:
+      'Understand the requirement, identify affected files, and define the approach and risk.',
     checks: ['Approach defined', 'Affected files identified'],
   },
   {
@@ -40,7 +41,7 @@ export const AGENT_ROLES: readonly AgentRole[] = [
   {
     id: 'debugger',
     name: 'Debugger',
-    responsibility: "Reproduce the problem, collect evidence, find the root cause, and fix it.",
+    responsibility: 'Reproduce the problem, collect evidence, find the root cause, and fix it.',
     checks: ['Problem reproduced', 'Root cause identified', 'Fix verified'],
   },
   {
@@ -74,7 +75,9 @@ export const EXECUTION_STRATEGIES: readonly ExecutionStrategy[] = [
   },
 ];
 
-export function getStrategyForComplexity(level: 'small' | 'standard' | 'high-risk'): ExecutionStrategy {
+export function getStrategyForComplexity(
+  level: 'small' | 'standard' | 'high-risk',
+): ExecutionStrategy {
   switch (level) {
     case 'small':
       return EXECUTION_STRATEGIES[0];
