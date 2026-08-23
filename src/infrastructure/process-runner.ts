@@ -40,10 +40,7 @@ export class ProcessRunner {
 
   /** Resolve an absolute command path available on PATH, or null. */
   async which(command: string): Promise<string | null> {
-    const result = await this.run(
-      process.platform === 'win32' ? `where ${command}` : `command -v ${command}`,
-      { tolerant: true },
-    );
+    const result = await this.run(process.platform === 'win32' ? `where ${command}` : `command -v ${command}`, { tolerant: true });
     if (!result.success) return null;
     const first = result.stdout.split(/\r?\n/)[0]?.trim();
     return first || null;

@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  capabilityFiles,
-  composedTemplateFiles,
-  ownerDirFor,
-  readComposedFile,
-} from './template-loader.js';
+import { capabilityFiles, composedTemplateFiles, ownerDirFor, readComposedFile } from './template-loader.js';
 
 describe('template composition', () => {
   it('includes base templates', () => {

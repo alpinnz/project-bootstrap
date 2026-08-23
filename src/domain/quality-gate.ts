@@ -9,14 +9,7 @@
 
 export type GateId = 'development' | 'security' | 'release';
 
-export type TriggerTopic =
-  | 'auth'
-  | 'payment'
-  | 'permission'
-  | 'secret'
-  | 'external-input'
-  | 'data-integrity'
-  | 'concurrency';
+export type TriggerTopic = 'auth' | 'payment' | 'permission' | 'secret' | 'external-input' | 'data-integrity' | 'concurrency';
 
 export interface QualityGate {
   readonly id: GateId;
@@ -41,11 +34,7 @@ export const QUALITY_GATES: readonly QualityGate[] = [
     name: 'Security Gate',
     default: false,
     triggers: ['auth', 'payment', 'permission', 'secret', 'external-input'],
-    checks: [
-      'Untrusted input validated',
-      'No secrets leaked',
-      'Least privilege / authorization enforced',
-    ],
+    checks: ['Untrusted input validated', 'No secrets leaked', 'Least privilege / authorization enforced'],
   },
   {
     id: 'release',

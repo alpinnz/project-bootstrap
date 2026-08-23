@@ -35,10 +35,7 @@ describe('suggestImprovements', () => {
     await fs.writeFile(path.join(dir, '.project-bootstrap', 'project.yml'), 'proj: {}\n');
     await fs.writeFile(path.join(dir, 'AGENTS.md'), '# Agents\n');
     // Also silence manifest/lockfile/tests suggestions partially.
-    await fs.writeFile(
-      path.join(dir, 'package.json'),
-      JSON.stringify({ name: 'x', scripts: { test: 'vitest', build: 'tsc' } }),
-    );
+    await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'x', scripts: { test: 'vitest', build: 'tsc' } }));
     await fs.writeFile(path.join(dir, 'package-lock.json'), '{}');
     await fs.writeFile(path.join(dir, '.gitignore'), '.env\nnode_modules\n');
 

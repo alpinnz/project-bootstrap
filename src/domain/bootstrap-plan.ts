@@ -43,12 +43,7 @@ export function summarizePlan(plan: BootstrapPlan): PlanSummary {
   return summary;
 }
 
-export function createPlanEntry(
-  path: string,
-  action: PlanAction,
-  reason: string,
-  content?: string,
-): PlanEntry {
+export function createPlanEntry(path: string, action: PlanAction, reason: string, content?: string): PlanEntry {
   return { path, action, reason, ...(content !== undefined ? { content } : {}) };
 }
 
@@ -61,8 +56,6 @@ export function renderPlanText(plan: BootstrapPlan): string {
   }
   const summary = summarizePlan(plan);
   lines.push('--------------');
-  lines.push(
-    `create: ${summary.create}  update: ${summary.update}  skip: ${summary.skip}  conflict: ${summary.conflict}`,
-  );
+  lines.push(`create: ${summary.create}  update: ${summary.update}  skip: ${summary.skip}  conflict: ${summary.conflict}`);
   return lines.join('\n');
 }

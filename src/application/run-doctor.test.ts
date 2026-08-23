@@ -34,10 +34,7 @@ describe('runDoctor', () => {
   });
 
   it('passes security check when secrets are gitignored', async () => {
-    await fs.writeFile(
-      path.join(dir, 'package.json'),
-      JSON.stringify({ name: 'app', scripts: { test: 'vitest', build: 'tsc' } }),
-    );
+    await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'app', scripts: { test: 'vitest', build: 'tsc' } }));
     await fs.writeFile(path.join(dir, '.gitignore'), '.env\nnode_modules\n');
     await fs.mkdir(path.join(dir, '.project-bootstrap'), { recursive: true });
     await fs.writeFile(path.join(dir, 'AGENTS.md'), '# Agents\n');

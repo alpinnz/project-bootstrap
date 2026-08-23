@@ -43,8 +43,7 @@ export async function suggestImprovements(options: SuggestOptions): Promise<Sugg
   // Foundation.
   const foundationCheck = doctor.categories.find((c) => c.title === 'Foundation')?.checks ?? [];
   const missingAgents = foundationCheck.find((c) => c.name === 'AGENTS.md')?.status === 'fail';
-  const missingConstitution =
-    foundationCheck.find((c) => c.name === 'Constitution')?.status === 'fail';
+  const missingConstitution = foundationCheck.find((c) => c.name === 'Constitution')?.status === 'fail';
 
   if (missingAgents || missingConstitution) {
     suggestions.push({
@@ -92,8 +91,7 @@ export async function suggestImprovements(options: SuggestOptions): Promise<Sugg
 
   // Security.
   const securityCheck = doctor.categories.find((c) => c.title === 'Security')?.checks ?? [];
-  const secretsNotIgnored =
-    securityCheck.find((c) => c.name === 'Secrets ignored')?.status === 'warning';
+  const secretsNotIgnored = securityCheck.find((c) => c.name === 'Secrets ignored')?.status === 'warning';
   if (secretsNotIgnored || !(await fs.exists(path.join(root, '.gitignore')))) {
     suggestions.push({
       id: 'secrets',
@@ -109,8 +107,7 @@ export async function suggestImprovements(options: SuggestOptions): Promise<Sugg
       id: 'structure',
       severity: 'low',
       title: 'Document repository structure',
-      detail:
-        'No obvious entry point detected. Add a README structure section or architecture doc.',
+      detail: 'No obvious entry point detected. Add a README structure section or architecture doc.',
     });
   }
 

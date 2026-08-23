@@ -50,21 +50,14 @@ export async function addCapability(options: AddCapabilityOptions): Promise<AddC
 }
 
 /** Build a plan for just the files the selected capability overlay provides. */
-async function buildCapabilityPlan(
-  capability: string,
-  root: string,
-  force: boolean | undefined,
-  fs: FileSystem,
-): Promise<BootstrapPlan> {
+async function buildCapabilityPlan(capability: string, root: string, force: boolean | undefined, fs: FileSystem): Promise<BootstrapPlan> {
   const entries = [];
   for (const rel of capabilityFiles(capability)) {
     const target = repoPath(root, rel);
     const exists = await fs.exists(target);
     if (exists) {
       entries.push(
-        force
-          ? createPlanEntry(rel, 'update', 'Force refresh capability file')
-          : createPlanEntry(rel, 'skip', 'Already exists (add is conservative)'),
+        force ? createPlanEntry(rel, 'update', 'Force refresh capability file') : createPlanEntry(rel, 'skip', 'Already exists (add is conservative)'),
       );
     } else {
       entries.push(createPlanEntry(rel, 'create', `Add ${capability} capability file`));
@@ -74,12 +67,7 @@ async function buildCapabilityPlan(
 }
 
 /** Apply only the capability overlay files, resolving content from the overlay. */
-async function applyCapabilityPlan(
-  plan: BootstrapPlan,
-  capability: string,
-  root: string,
-  fs: FileSystem,
-): Promise<ApplyReport> {
+async function applyCapabilityPlan(plan: BootstrapPlan, capability: string, root: string, fs: FileSystem): Promise<ApplyReport> {
   const report: ApplyReport = { applied: 0, skipped: 0, conflicted: 0, created: [], updated: [] };
 
   for (const entry of plan.entries) {

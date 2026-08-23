@@ -36,11 +36,7 @@ export async function detectTooling(input: DetectionInput): Promise<DetectedTool
   };
 }
 
-async function detectPackageManager(
-  fs: FileSystem,
-  root: string,
-  manifest: PackageManifest | null,
-): Promise<PackageManager> {
+async function detectPackageManager(fs: FileSystem, root: string, manifest: PackageManifest | null): Promise<PackageManager> {
   const lockfiles: Array<[string, PackageManager]> = [
     ['pnpm-lock.yaml', 'pnpm'],
     ['bun.lockb', 'bun'],
@@ -57,11 +53,7 @@ async function detectPackageManager(
   return 'unknown';
 }
 
-function detectRuntime(
-  hasGoMod: boolean,
-  hasBunLock: boolean,
-  manifest: PackageManifest | null,
-): Runtime {
+function detectRuntime(hasGoMod: boolean, hasBunLock: boolean, manifest: PackageManifest | null): Runtime {
   if (hasGoMod) return 'go';
   if (hasBunLock || manifest?.packageManager?.startsWith('bun')) return 'bun';
   if (manifest) return 'node';

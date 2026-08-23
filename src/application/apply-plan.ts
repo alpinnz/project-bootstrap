@@ -28,11 +28,7 @@ function enabledCapabilities(project: ProjectContext): string[] {
  * with the same relative path being written into project.root. Content is
  * resolved from the base + enabled capability overlays.
  */
-export async function applyPlan(
-  plan: BootstrapPlan,
-  project: ProjectContext | string,
-  fsImpl: FileSystem,
-): Promise<ApplyReport> {
+export async function applyPlan(plan: BootstrapPlan, project: ProjectContext | string, fsImpl: FileSystem): Promise<ApplyReport> {
   const root = typeof project === 'string' ? project : project.root;
   const capabilities = typeof project === 'string' ? [] : enabledCapabilities(project);
 

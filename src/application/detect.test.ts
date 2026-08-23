@@ -56,10 +56,7 @@ describe('detectTooling', () => {
   });
 
   it('detects package manager from the packageManager field', async () => {
-    await fs.writeFile(
-      path.join(dir, 'package.json'),
-      JSON.stringify({ name: 'app', packageManager: 'yarn@1.22' }),
-    );
+    await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'app', packageManager: 'yarn@1.22' }));
     const tooling = await detectTooling({ fs: fsImpl, root: dir });
     expect(tooling.packageManager).toBe('yarn');
   });

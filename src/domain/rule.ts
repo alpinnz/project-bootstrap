@@ -13,13 +13,4 @@ export interface Rule {
   readonly body: string;
 }
 
-export type RuleCategory =
-  | 'code'
-  | 'architecture'
-  | 'testing'
-  | 'security'
-  | 'dependencies'
-  | 'documentation'
-  | 'git'
-  | 'agent'
-  | 'tools';
+export type RuleCategory = 'code' | 'architecture' | 'testing' | 'security' | 'dependencies' | 'documentation' | 'git' | 'agent' | 'tools';

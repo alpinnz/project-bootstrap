@@ -2,12 +2,7 @@
  * Quality gate use case: evaluate which gates apply for a set of change topics
  * and render a checklist the implementer/reviewer must satisfy.
  */
-import {
-  type GateEvaluation,
-  type TriggerTopic,
-  applicableGates,
-  evaluateGates,
-} from '../domain/quality-gate.js';
+import { type GateEvaluation, type TriggerTopic, applicableGates, evaluateGates } from '../domain/quality-gate.js';
 
 export interface QualityGateOptions {
   readonly topics: readonly TriggerTopic[];

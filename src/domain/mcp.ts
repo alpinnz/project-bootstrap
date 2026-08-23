@@ -7,15 +7,7 @@
  * This models the capability catalog and per-server posture.
  */
 
-export const MCP_CATEGORIES = [
-  'documentation',
-  'source-control',
-  'design',
-  'api',
-  'database',
-  'observability',
-  'cloud',
-] as const;
+export const MCP_CATEGORIES = ['documentation', 'source-control', 'design', 'api', 'database', 'observability', 'cloud'] as const;
 export type McpCategory = (typeof MCP_CATEGORIES)[number];
 
 export type McpAccess = 'read-only' | 'write' | 'read-write';

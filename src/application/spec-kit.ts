@@ -21,17 +21,13 @@ export interface SpecKitReport {
 
 export async function inspectSpecKit(options: SpecKitOptions): Promise<SpecKitReport> {
   const { root, fs } = options;
-  const rulePresent = await fs.exists(
-    path.join(root, '.project-bootstrap', 'rules', 'spec-kit.md'),
-  );
+  const rulePresent = await fs.exists(path.join(root, '.project-bootstrap', 'rules', 'spec-kit.md'));
   const specsDir = await fs.exists(path.join(root, 'specs'));
   const enabled = rulePresent;
   return {
     enabled,
     specsDir,
     rulePresent,
-    summary: enabled
-      ? 'Spec Kit capability enabled: specifications live under specs/'
-      : 'Spec Kit capability not detected',
+    summary: enabled ? 'Spec Kit capability enabled: specifications live under specs/' : 'Spec Kit capability not detected',
   };
 }

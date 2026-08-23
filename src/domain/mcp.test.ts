@@ -3,15 +3,7 @@ import { MCP_CATALOG, MCP_CATEGORIES, getMcpCapability, mcpCapabilitiesByCategor
 
 describe('MCP strategy', () => {
   it('defines the expected categories', () => {
-    expect(MCP_CATEGORIES).toEqual([
-      'documentation',
-      'source-control',
-      'design',
-      'api',
-      'database',
-      'observability',
-      'cloud',
-    ]);
+    expect(MCP_CATEGORIES).toEqual(['documentation', 'source-control', 'design', 'api', 'database', 'observability', 'cloud']);
   });
 
   it('defaults most built-ins to safe read-only', () => {

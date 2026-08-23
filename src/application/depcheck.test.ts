@@ -37,20 +37,14 @@ describe('runDepcheck', () => {
   });
 
   it('flags missing lockfile as attention', async () => {
-    await fs.writeFile(
-      path.join(dir, 'package.json'),
-      JSON.stringify({ name: 'x', dependencies: { express: '^4' } }),
-    );
+    await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'x', dependencies: { express: '^4' } }));
     const report = await runDepcheck({ root: dir, fs: fsImpl });
     expect(report.lockfilePresent).toBe(false);
     expect(report.health).toBe('attention');
   });
 
   it('is healthy with manifest + lockfile and clean deps', async () => {
-    await fs.writeFile(
-      path.join(dir, 'package.json'),
-      JSON.stringify({ name: 'x', dependencies: { express: '^4' } }),
-    );
+    await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'x', dependencies: { express: '^4' } }));
     await fs.writeFile(path.join(dir, 'package-lock.json'), '{}');
     const report = await runDepcheck({ root: dir, fs: fsImpl });
     expect(report.lockfilePresent).toBe(true);
@@ -59,10 +53,7 @@ describe('runDepcheck', () => {
   });
 
   it('flags a typosquat dependency as high-signal', async () => {
-    await fs.writeFile(
-      path.join(dir, 'package.json'),
-      JSON.stringify({ name: 'x', dependencies: { lodahs: '1.0.0' } }),
-    );
+    await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'x', dependencies: { lodahs: '1.0.0' } }));
     await fs.writeFile(path.join(dir, 'package-lock.json'), '{}');
     const report = await runDepcheck({ root: dir, fs: fsImpl });
     expect(report.flagged.length).toBe(1);

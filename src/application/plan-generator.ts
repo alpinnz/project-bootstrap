@@ -23,23 +23,14 @@ function enabledCapabilities(project: ProjectContext): string[] {
  * Build the plan that would apply the foundation to a project.
  * Does not touch the filesystem.
  */
-export async function generateBootstrapPlan(
-  project: ProjectContext,
-  fs: FileSystem,
-  options: PlanOptions = {},
-): Promise<BootstrapPlan> {
+export async function generateBootstrapPlan(project: ProjectContext, fs: FileSystem, options: PlanOptions = {}): Promise<BootstrapPlan> {
   const entries: PlanEntry[] = [];
   const capabilities = enabledCapabilities(project);
   const templateList = composedTemplateFiles(capabilities);
 
   if (templateList.length === 0) {
     entries.push(
-      createPlanEntry(
-        '.project-bootstrap/',
-        'conflict',
-        'No foundation templates found',
-        undefined,
-      ),
+      createPlanEntry('.project-bootstrap/', 'conflict', 'No foundation templates found', undefined),
       createPlanEntry('.project-bootstrap/', 'skip', 'Templates unavailable', undefined),
     );
     return { entries };

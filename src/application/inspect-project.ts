@@ -38,12 +38,7 @@ export async function inspectProject(options: InspectOptions): Promise<ProjectCo
 
 async function listManagedFiles(fs: FileSystem, root: string): Promise<string[]> {
   const files: string[] = [];
-  const known = [
-    'AGENTS.md',
-    'CLAUDE.md',
-    '.project-bootstrap/constitution.md',
-    '.project-bootstrap/project.yml',
-  ];
+  const known = ['AGENTS.md', 'CLAUDE.md', '.project-bootstrap/constitution.md', '.project-bootstrap/project.yml'];
   for (const file of known) {
     if (await fs.exists(path.join(root, file))) files.push(file);
   }
@@ -56,10 +51,7 @@ async function listManagedFiles(fs: FileSystem, root: string): Promise<string[]>
  * Explicit capability selections (via create/init options) are merged in by
  * the caller.
  */
-export async function detectEnabledCapabilities(
-  fs: FileSystem,
-  root: string,
-): Promise<ProjectContext['capabilities']> {
+export async function detectEnabledCapabilities(fs: FileSystem, root: string): Promise<ProjectContext['capabilities']> {
   const candidates = [
     { id: 'base', marker: '.project-bootstrap/constitution.md' },
     { id: 'docs', marker: 'docs' },
@@ -79,13 +71,8 @@ export async function detectEnabledCapabilities(
  * requested id is forced to enabled=true — both adding new entries and
  * upgrading already-detected-but-disabled ones.
  */
-export function mergeRequestedCapabilities(
-  detected: ProjectContext['capabilities'],
-  requested: readonly string[],
-): ProjectContext['capabilities'] {
-  const result: Array<{ id: string; enabled: boolean }> = detected.map((c) =>
-    requested.includes(c.id) ? { ...c, enabled: true } : c,
-  );
+export function mergeRequestedCapabilities(detected: ProjectContext['capabilities'], requested: readonly string[]): ProjectContext['capabilities'] {
+  const result: Array<{ id: string; enabled: boolean }> = detected.map((c) => (requested.includes(c.id) ? { ...c, enabled: true } : c));
   for (const id of requested) {
     if (!result.some((c) => c.id === id)) {
       result.push({ id, enabled: true });

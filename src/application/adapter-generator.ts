@@ -29,9 +29,7 @@ export async function generateAdapterContext(options: AdapterOptions): Promise<A
 }
 
 /** Generate and write the adapter context file into the project root. */
-export async function writeAdapterContext(
-  options: AdapterOptions & { readonly fs: FileSystem },
-): Promise<AdapterResult> {
+export async function writeAdapterContext(options: AdapterOptions & { readonly fs: FileSystem }): Promise<AdapterResult> {
   const result = await generateAdapterContext(options);
   const abs = path.join(options.project.root, result.targetFile);
   await options.fs.ensureDir(path.dirname(abs));

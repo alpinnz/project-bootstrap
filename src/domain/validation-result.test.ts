@@ -3,9 +3,7 @@ import { aggregateHealth, renderValidation, type ValidationCategory } from './va
 
 describe('validation result', () => {
   it('aggregates to healthy when all pass', () => {
-    const categories: ValidationCategory[] = [
-      { title: 'A', checks: [{ name: '1', status: 'pass', message: 'ok' }] },
-    ];
+    const categories: ValidationCategory[] = [{ title: 'A', checks: [{ name: '1', status: 'pass', message: 'ok' }] }];
     expect(aggregateHealth(categories)).toBe('healthy');
   });
 
@@ -23,9 +21,7 @@ describe('validation result', () => {
   });
 
   it('aggregates to attention on only warnings', () => {
-    const categories: ValidationCategory[] = [
-      { title: 'A', checks: [{ name: '1', status: 'warning', message: 'warn' }] },
-    ];
+    const categories: ValidationCategory[] = [{ title: 'A', checks: [{ name: '1', status: 'warning', message: 'warn' }] }];
     expect(aggregateHealth(categories)).toBe('attention');
   });
 

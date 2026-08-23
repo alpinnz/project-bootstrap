@@ -18,9 +18,7 @@ describe('addCapability', () => {
   });
 
   it('throws for an unknown capability', async () => {
-    await expect(
-      addCapability({ root: dir, capability: 'nope', fs: new FileSystem(), git: new GitClient() }),
-    ).rejects.toThrow(/Unknown capability/);
+    await expect(addCapability({ root: dir, capability: 'nope', fs: new FileSystem(), git: new GitClient() })).rejects.toThrow(/Unknown capability/);
   });
 
   it('adds the typescript capability files', async () => {

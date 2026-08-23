@@ -40,11 +40,7 @@ async function checkFoundation(fs: FileSystem, root: string): Promise<Validation
   return { title: 'Foundation', checks };
 }
 
-async function checkDevelopment(
-  fs: FileSystem,
-  root: string,
-  commands: readonly string[],
-): Promise<ValidationCategory> {
+async function checkDevelopment(fs: FileSystem, root: string, commands: readonly string[]): Promise<ValidationCategory> {
   const checks: CheckResult[] = [];
   const hasManifest = await fs.exists(path.join(root, 'package.json'));
   checks.push({
@@ -81,8 +77,7 @@ function checkAgentic(): ValidationCategory {
 async function checkSecurity(fs: FileSystem, root: string): Promise<ValidationCategory> {
   const checks: CheckResult[] = [];
   const gitignore = await fs.read(path.join(root, '.gitignore'));
-  const ignoresSecrets =
-    gitignore !== null && /\.env\b|\.env\*/.test(gitignore) && /node_modules/.test(gitignore);
+  const ignoresSecrets = gitignore !== null && /\.env\b|\.env\*/.test(gitignore) && /node_modules/.test(gitignore);
 
   const envPlayground = await fs.exists(path.join(root, '.env'));
   const envExample = await fs.exists(path.join(root, '.env.example'));
@@ -90,27 +85,17 @@ async function checkSecurity(fs: FileSystem, root: string): Promise<ValidationCa
   checks.push({
     name: 'Secrets ignored',
     status: ignoresSecrets ? 'pass' : 'warning',
-    message: ignoresSecrets
-      ? '.gitignore protects env/secrets'
-      : '.gitignore may not protect secrets',
+    message: ignoresSecrets ? '.gitignore protects env/secrets' : '.gitignore may not protect secrets',
   });
   checks.push({
     name: 'No committed secrets',
     status: envPlayground && !envExample ? 'warning' : 'pass',
-    message:
-      envPlayground && !envExample
-        ? '.env present without .env.example'
-        : 'No obvious secret file committed',
+    message: envPlayground && !envExample ? '.env present without .env.example' : 'No obvious secret file committed',
   });
   return { title: 'Security', checks };
 }
 
-async function fileCheck(
-  fs: FileSystem,
-  root: string,
-  rel: string,
-  label: string,
-): Promise<CheckResult> {
+async function fileCheck(fs: FileSystem, root: string, rel: string, label: string): Promise<CheckResult> {
   const exists = await fs.exists(path.join(root, rel));
   return {
     name: label,

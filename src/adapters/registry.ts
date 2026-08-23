@@ -5,12 +5,7 @@ import type { AiAdapter, AiAdapterId } from './ai-adapter.js';
 import { ClaudeAdapter } from './claude.js';
 import { CodexAdapter, CopilotAdapter, CursorAdapter } from './others.js';
 
-export const allAdapters: readonly AiAdapter[] = [
-  new ClaudeAdapter(),
-  new CodexAdapter(),
-  new CursorAdapter(),
-  new CopilotAdapter(),
-];
+export const allAdapters: readonly AiAdapter[] = [new ClaudeAdapter(), new CodexAdapter(), new CursorAdapter(), new CopilotAdapter()];
 
 export function getAdapter(id: AiAdapterId): AiAdapter {
   const found = allAdapters.find((adapter) => adapter.id === id);

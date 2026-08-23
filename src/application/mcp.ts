@@ -23,9 +23,7 @@ export interface McpOptions {
 
 /** Read the project's MCP server configuration (.project-bootstrap/mcp/servers.json). */
 export async function readMcpConfig(options: McpOptions): Promise<McpProjectConfig> {
-  const cfg = await options.fs.readJson<McpProjectConfig>(
-    path.join(options.root, '.project-bootstrap', 'mcp', 'servers.json'),
-  );
+  const cfg = await options.fs.readJson<McpProjectConfig>(path.join(options.root, '.project-bootstrap', 'mcp', 'servers.json'));
   return cfg ?? { servers: [] };
 }
 
@@ -36,9 +34,7 @@ export function renderMcpPosture(): string {
 export function renderCatalog(): string {
   const lines = ['MCP Capability Catalog', ''];
   for (const capability of MCP_CATALOG) {
-    lines.push(
-      `${capability.id} [${capability.category}]${capability.safeDefault ? ' (safe read-only)' : ''}`,
-    );
+    lines.push(`${capability.id} [${capability.category}]${capability.safeDefault ? ' (safe read-only)' : ''}`);
     lines.push(`  reads:      ${capability.reads}`);
     if (capability.writes) lines.push(`  writes:     ${capability.writes}`);
     lines.push(`  credentials: ${capability.credentials}`);

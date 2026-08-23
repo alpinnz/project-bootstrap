@@ -33,13 +33,9 @@ export async function createProject(options: CreateOptions): Promise<CreateResul
   const git = options.git ?? new GitClient();
 
   // Refuse to overwrite a non-empty existing project.
-  const existing = (await fsImpl.readDir(options.targetDir)).filter(
-    (name) => name !== '.git' && name !== '.idea',
-  );
+  const existing = (await fsImpl.readDir(options.targetDir)).filter((name) => name !== '.git' && name !== '.idea');
   if (existing.length > 0) {
-    throw new Error(
-      `Target directory "${options.targetDir}" is not empty. Use "init" to add a foundation to an existing project.`,
-    );
+    throw new Error(`Target directory "${options.targetDir}" is not empty. Use "init" to add a foundation to an existing project.`);
   }
 
   await fsImpl.ensureDir(options.targetDir);

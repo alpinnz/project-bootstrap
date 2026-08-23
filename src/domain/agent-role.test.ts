@@ -1,20 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import {
-  AGENT_ROLES,
-  EXECUTION_STRATEGIES,
-  getAgentRole,
-  getStrategyForComplexity,
-} from './agent-role.js';
+import { AGENT_ROLES, EXECUTION_STRATEGIES, getAgentRole, getStrategyForComplexity } from './agent-role.js';
 
 describe('agent roles', () => {
   it('defines the five roles', () => {
-    expect(AGENT_ROLES.map((r) => r.id)).toEqual([
-      'planner',
-      'implementer',
-      'reviewer',
-      'debugger',
-      'test-engineer',
-    ]);
+    expect(AGENT_ROLES.map((r) => r.id)).toEqual(['planner', 'implementer', 'reviewer', 'debugger', 'test-engineer']);
   });
 
   it('looks up a role by id', () => {
@@ -37,12 +26,7 @@ describe('execution strategies', () => {
   });
 
   it('maps high-risk -> full pipeline', () => {
-    expect(getStrategyForComplexity('high-risk').roles).toEqual([
-      'planner',
-      'implementer',
-      'test-engineer',
-      'reviewer',
-    ]);
+    expect(getStrategyForComplexity('high-risk').roles).toEqual(['planner', 'implementer', 'test-engineer', 'reviewer']);
   });
 
   it('has three strategies', () => {

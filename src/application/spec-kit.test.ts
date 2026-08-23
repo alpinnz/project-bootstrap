@@ -25,10 +25,7 @@ describe('inspectSpecKit', () => {
 
   it('reports enabled when the rule is present', async () => {
     await fs.mkdir(path.join(dir, '.project-bootstrap', 'rules'), { recursive: true });
-    await fs.writeFile(
-      path.join(dir, '.project-bootstrap', 'rules', 'spec-kit.md'),
-      '# Spec Kit\n',
-    );
+    await fs.writeFile(path.join(dir, '.project-bootstrap', 'rules', 'spec-kit.md'), '# Spec Kit\n');
     const report = await inspectSpecKit({ root: dir, fs: fsImpl });
     expect(report.enabled).toBe(true);
     expect(report.summary).toContain('enabled');

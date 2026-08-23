@@ -69,9 +69,7 @@ export async function analyzeProject(options: AnalyzeOptions): Promise<AnalyzeRe
   const tooling = await detectTooling({ fs, root });
 
   const topLevel = await readTopLevel(fs, root);
-  const hotspots = topLevel
-    .filter((e) => e.type === 'dir' && HOTSPOT_DIRS.includes(e.name.toLowerCase()))
-    .map((e) => e.name);
+  const hotspots = topLevel.filter((e) => e.type === 'dir' && HOTSPOT_DIRS.includes(e.name.toLowerCase())).map((e) => e.name);
 
   const entryPoints: string[] = [];
   for (const heuristic of ENTRY_POINT_HEURISTICS) {
@@ -115,7 +113,5 @@ async function readTopLevel(fs: FileSystem, root: string): Promise<TopLevelEntry
     entries.push({ name, type: isDir ? 'dir' : 'file' });
   }
   // Deterministic ordering.
-  return entries.sort((a, b) =>
-    a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'dir' ? -1 : 1,
-  );
+  return entries.sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'dir' ? -1 : 1));
 }

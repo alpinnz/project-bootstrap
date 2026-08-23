@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  createPlanEntry,
-  renderPlanText,
-  summarizePlan,
-  type BootstrapPlan,
-} from './bootstrap-plan.js';
+import { createPlanEntry, renderPlanText, summarizePlan, type BootstrapPlan } from './bootstrap-plan.js';
 
 describe('bootstrap plan', () => {
   it('summarizes entries by action', () => {
