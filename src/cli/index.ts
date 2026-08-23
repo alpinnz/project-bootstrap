@@ -13,6 +13,7 @@
  *   context  — show the context plan for a level
  *   adapters — generate AI adapter context
  */
+import { createRequire } from 'node:module';
 import { Command } from 'commander';
 import { FileSystem } from '../infrastructure/filesystem.js';
 import {
@@ -47,10 +48,15 @@ import type { ProjectContext } from '../domain/project-context.js';
 const fs = new FileSystem();
 const program = new Command();
 
+// Read the package version at runtime so `--version` always matches the
+// installed package, rather than a hardcoded value that drifts across releases.
+const require = createRequire(import.meta.url);
+const packageJson = require('../../package.json') as { version: string };
+
 program
   .name('project-bootstrap')
   .description('Software Project Operating Foundation')
-  .version('0.0.1');
+  .version(packageJson.version);
 
 program
   .command('create')
