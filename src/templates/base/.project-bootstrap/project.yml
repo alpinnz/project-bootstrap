@@ -1,0 +1,21 @@
+# Project context — source of truth for project-bootstrap.
+# Owned by humans. Detected values are refreshed by `project-bootstrap inspect`.
+
+project:
+  name: ""
+  description: ""
+
+tooling:
+  language: ""
+  framework: ""
+  runtime: ""
+  package_manager: ""
+
+capabilities:
+  # Enabled capability ids composed from the base + language + framework + capability set.
+  - base
+
+managed:
+  # Files refreshed by `project-bootstrap sync`.
+  - AGENTS.md
+  - CLAUDE.md
