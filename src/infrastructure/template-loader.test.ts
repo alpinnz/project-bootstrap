@@ -60,6 +60,39 @@ describe('template composition', () => {
     expect(files).toContain('main_test.go');
   });
 
+  it('adds governance tooling configs when the governance capability is enabled', () => {
+    const files = composedTemplateFiles(['governance']);
+    expect(files).toContain('eslint.config.js');
+    expect(files).toContain('.prettierrc.json');
+    expect(files).toContain('.prettierignore');
+    expect(files).toContain('commitlint.config.cjs');
+    expect(files).toContain('.husky/pre-commit');
+    expect(files).toContain('.husky/commit-msg');
+    expect(files).toContain('.project-bootstrap/rules/governance.md');
+    expect(files).toContain('docs/governance.md');
+  });
+
+  it('does not leak governance files when not enabled', () => {
+    const files = composedTemplateFiles();
+    expect(files).not.toContain('.husky/pre-commit');
+    expect(files).not.toContain('.project-bootstrap/rules/governance.md');
+  });
+
+  it('governance overlay does not ship a package.json (manifest merge is unsupported)', () => {
+    const files = composedTemplateFiles(['governance']);
+    expect(files.filter((f) => f === 'package.json')).toHaveLength(0);
+  });
+
+  it('resolves governance rule content from the overlay', () => {
+    const content = readComposedFile('.project-bootstrap/rules/governance.md', ['governance']);
+    expect(content).toContain('Governance');
+  });
+
+  it('resolves owner dir for the governance rule to the overlay', () => {
+    const owner = ownerDirFor('.project-bootstrap/rules/governance.md', ['governance']);
+    expect(owner).toMatch(/capabilities[\\/]governance$/);
+  });
+
   it('lists files for a specific capability overlay', () => {
     const files = capabilityFiles('typescript');
     expect(files).toContain('src/index.ts');
