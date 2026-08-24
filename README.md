@@ -1,5 +1,8 @@
 # project-bootstrap
 
+[![npm version](https://img.shields.io/npm/v/project-bootstrap)](https://www.npmjs.com/package/project-bootstrap)
+[![CI](https://github.com/alpinnz/project-bootstrap/actions/workflows/ci.yml/badge.svg)](https://github.com/alpinnz/project-bootstrap/actions/workflows/ci.yml)
+
 A reusable software project foundation system that creates, configures,
 validates, and evolves software repositories with consistent engineering
 practices. It combines a **project foundation**, **development foundation**,
@@ -8,9 +11,18 @@ practices. It combines a **project foundation**, **development foundation**,
 > Strong foundation. Small context. Explicit rules. Safe automation. Verified
 > delivery.
 
+## Install
+
+```bash
+npm install -g project-bootstrap
+# or run without installing
+npx project-bootstrap --help
+```
+
 ## Status
 
-Phase 4 (Intelligence). See `plan.md` for the full specification and roadmap.
+Published to npm (`project-bootstrap`). See `plan.md` for the full
+specification and roadmap.
 
 ## Commands
 
@@ -107,11 +119,24 @@ Managed content is delimited by `<!-- project-bootstrap:start -->` /
 ## Development
 
 ```bash
-npm install
-npm run build      # tsc + copy templates to dist/
-npm test           # vitest
+npm install        # install dependencies (also sets up husky hooks)
 npm run typecheck  # tsc --noEmit
+npm run lint       # eslint
+npm run format     # prettier --write
+npm run test       # vitest
+npm run build      # tsc + copy templates to dist/
 ```
+
+### Git governance
+
+Git hooks run automatically via [Husky](https://typicode.github.io/husky/):
+
+- `pre-commit`: [`lint-staged`](https://github.com/lint-staged/lint-staged)
+  runs ESLint `--fix` and Prettier `--write` on staged files.
+- `commit-msg`: [`commitlint`](https://commitlint.js.org/) enforces
+  Conventional Commits (e.g. `feat:`, `fix:`, `chore:`, `release:`).
+
+CI runs lint, format check, typecheck, tests, and a build on every push/PR.
 
 ## Architecture
 
