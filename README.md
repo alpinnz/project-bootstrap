@@ -65,6 +65,7 @@ capabilities:
 | Capability | Provides                                                         |
 | ---------- | ---------------------------------------------------------------- |
 | testing    | testing-policy rule                                              |
+| governance | ESLint, Prettier, Husky, lint-staged, commitlint configs + rule  |
 | mcp        | MCP server config (read-only posture)                            |
 | speckit    | specification-driven development rule + docs                     |
 | typescript | TS/Node scaffold: package.json, tsconfig, src/index, vitest test |

@@ -29,6 +29,11 @@ export const BUILTIN_CAPABILITIES: readonly Capability[] = [
     description: 'Testing policy overlay.',
   },
   {
+    id: 'governance',
+    name: 'Governance',
+    description: 'Quality governance: ESLint, Prettier, Husky, lint-staged, and commitlint configs for consistent engineering practices.',
+  },
+  {
     id: 'mcp',
     name: 'MCP',
     description: 'MCP server configuration with read-only, least-privilege defaults.',
