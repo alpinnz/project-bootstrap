@@ -55,6 +55,7 @@ export async function detectEnabledCapabilities(fs: FileSystem, root: string): P
   const candidates = [
     { id: 'base', marker: '.project-bootstrap/constitution.md' },
     { id: 'docs', marker: 'docs' },
+    { id: 'governance', marker: '.project-bootstrap/rules/governance.md' },
     { id: 'mcp', marker: '.project-bootstrap/mcp/servers.json' },
     { id: 'testing', marker: '.project-bootstrap/rules/testing-policy.md' },
     { id: 'speckit', marker: 'specs' },

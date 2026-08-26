@@ -9,6 +9,7 @@ import type { BootstrapPlan, PlanEntry } from '../domain/bootstrap-plan.js';
 import type { ProjectContext } from '../domain/project-context.js';
 import type { FileSystem } from '../infrastructure/filesystem.js';
 import { readComposedFile } from '../infrastructure/template-loader.js';
+import { mergeManifestFragment, type MergeManifestResult } from './manifest-merge.js';
 
 export interface ApplyReport {
   applied: number;
@@ -16,7 +17,12 @@ export interface ApplyReport {
   conflicted: number;
   created: string[];
   updated: string[];
+  /** Result of merging capability manifest fragments, when one applied. */
+  manifest?: MergeManifestResult;
 }
+
+/** Overlay-relative path of the per-capability package.json fragment. */
+export const MANIFEST_FRAGMENT_PATH = 'project-bootstrap.manifest.json';
 
 /** Capability ids enabled on a project. */
 function enabledCapabilities(project: ProjectContext): string[] {
@@ -41,6 +47,7 @@ export async function applyPlan(plan: BootstrapPlan, project: ProjectContext | s
   };
 
   for (const entry of plan.entries) {
+    if (entry.path === MANIFEST_FRAGMENT_PATH) continue; // merged below, never written as a file
     if (entry.action !== 'create' && entry.action !== 'update') {
       if (entry.action === 'skip') report.skipped += 1;
       else if (entry.action === 'conflict') report.conflicted += 1;
@@ -64,6 +71,14 @@ export async function applyPlan(plan: BootstrapPlan, project: ProjectContext | s
       report.created.push(entry.path);
     }
     report.applied += 1;
+  }
+
+  // Post-step: merge capability manifest fragments (e.g. governance devDeps
+  // and scripts) additively into package.json. Additive only: existing keys
+  // always keep their user values.
+  const fragmentRaw = readComposedFile(MANIFEST_FRAGMENT_PATH, capabilities);
+  if (fragmentRaw !== null) {
+    report.manifest = await mergeManifestFragment({ root, fs: fsImpl, fragmentRaw });
   }
 
   return report;

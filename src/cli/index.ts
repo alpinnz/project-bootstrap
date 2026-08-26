@@ -55,6 +55,18 @@ const packageJson = require('../../package.json') as { version: string };
 
 program.name('project-bootstrap').description('Software Project Operating Foundation').version(packageJson.version);
 
+/** Print the outcome of a capability manifest merge, when one happened. */
+function printManifestMerge(report?: {
+  manifest?: { changed: boolean; created: boolean; addedScripts: string[]; addedDevDependencies: string[]; preservedKeys: string[] };
+}): void {
+  const manifest = report?.manifest;
+  if (!manifest || !manifest.changed) return;
+  console.log(`Manifest package.json ${manifest.created ? 'created' : 'updated'}:`);
+  if (manifest.addedScripts.length > 0) console.log(`  scripts added: ${manifest.addedScripts.join(', ')}`);
+  if (manifest.addedDevDependencies.length > 0) console.log(`  devDependencies added: ${manifest.addedDevDependencies.join(', ')}`);
+  if (manifest.preservedKeys.length > 0) console.log(`  preserved existing keys: ${manifest.preservedKeys.join(', ')}`);
+}
+
 program
   .command('create')
   .description('Create a new project with the foundation')
@@ -77,6 +89,7 @@ program
     }
     const report = result.report!;
     console.log(`Created: ${report.created.length}  Updated: ${report.updated.length}`);
+    printManifestMerge(report);
   });
 
 program
@@ -108,6 +121,7 @@ program
     console.log(
       `Applied: ${report.applied}  Created: ${report.created.length}  Updated: ${report.updated.length}  Skipped: ${report.skipped}  Conflicts: ${report.conflicted}`,
     );
+    printManifestMerge(report);
   });
 
 program
@@ -251,6 +265,7 @@ program
     console.log(
       `Applied: ${report.applied}  Created: ${report.created.length}  Updated: ${report.updated.length}  Skipped: ${report.skipped}  Conflicts: ${report.conflicted}`,
     );
+    printManifestMerge(report);
   });
 
 program

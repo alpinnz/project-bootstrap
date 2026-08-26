@@ -70,6 +70,7 @@ describe('template composition', () => {
     expect(files).toContain('.husky/commit-msg');
     expect(files).toContain('.project-bootstrap/rules/governance.md');
     expect(files).toContain('docs/governance.md');
+    expect(files).toContain('project-bootstrap.manifest.json');
   });
 
   it('does not leak governance files when not enabled', () => {
@@ -78,9 +79,10 @@ describe('template composition', () => {
     expect(files).not.toContain('.project-bootstrap/rules/governance.md');
   });
 
-  it('governance overlay does not ship a package.json (manifest merge is unsupported)', () => {
+  it('governance overlay ships a manifest fragment, never a package.json', () => {
     const files = composedTemplateFiles(['governance']);
     expect(files.filter((f) => f === 'package.json')).toHaveLength(0);
+    expect(files.filter((f) => f === 'project-bootstrap.manifest.json')).toHaveLength(1);
   });
 
   it('resolves governance rule content from the overlay', () => {

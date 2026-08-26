@@ -10,7 +10,8 @@ import { renderPlanText, type BootstrapPlan, createPlanEntry } from '../domain/b
 import { FileSystem } from '../infrastructure/filesystem.js';
 import { GitClient } from '../infrastructure/git.js';
 import { capabilityFiles, readComposedFile } from '../infrastructure/template-loader.js';
-import type { ApplyReport } from './apply-plan.js';
+import { MANIFEST_FRAGMENT_PATH, type ApplyReport } from './apply-plan.js';
+import { mergeManifestFragment } from './manifest-merge.js';
 
 export interface AddCapabilityOptions {
   readonly root: string;
@@ -49,10 +50,20 @@ export async function addCapability(options: AddCapabilityOptions): Promise<AddC
   return { capability: options.capability, planText, dryRun: false, report };
 }
 
+/**
+ * Manifest fragments (e.g. the governance overlay's package.json deps/scripts
+ * snippet) are merged into package.json by applyCapabilityPlan, never written
+ * to disk as standalone project files.
+ */
+function isManifestFragment(rel: string): boolean {
+  return rel === MANIFEST_FRAGMENT_PATH;
+}
+
 /** Build a plan for just the files the selected capability overlay provides. */
 async function buildCapabilityPlan(capability: string, root: string, force: boolean | undefined, fs: FileSystem): Promise<BootstrapPlan> {
   const entries = [];
   for (const rel of capabilityFiles(capability)) {
+    if (isManifestFragment(rel)) continue;
     const target = repoPath(root, rel);
     const exists = await fs.exists(target);
     if (exists) {
@@ -93,6 +104,13 @@ async function applyCapabilityPlan(plan: BootstrapPlan, capability: string, root
     if (existed) report.updated.push(entry.path);
     else report.created.push(entry.path);
     report.applied += 1;
+  }
+
+  // Merge the capability's manifest fragment additively into package.json
+  // (never written as a standalone file; existing user keys are preserved).
+  const fragmentRaw = readComposedFile(MANIFEST_FRAGMENT_PATH, [capability]);
+  if (fragmentRaw !== null) {
+    report.manifest = await mergeManifestFragment({ root, fs, fragmentRaw });
   }
   return report;
 }

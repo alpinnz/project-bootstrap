@@ -62,15 +62,15 @@ templates/
 An overlay file with the same relative path shadows the base file. Available
 capabilities:
 
-| Capability | Provides                                                         |
-| ---------- | ---------------------------------------------------------------- |
-| testing    | testing-policy rule                                              |
-| governance | ESLint, Prettier, Husky, lint-staged, commitlint configs + rule  |
-| mcp        | MCP server config (read-only posture)                            |
-| speckit    | specification-driven development rule + docs                     |
-| typescript | TS/Node scaffold: package.json, tsconfig, src/index, vitest test |
-| react      | React + Vite scaffold: main.tsx, App, vite.config, tsconfig-jsx  |
-| go         | Go service/CLI scaffold: go.mod, main.go, test                   |
+| Capability | Provides                                                                                                            |
+| ---------- | ------------------------------------------------------------------------------------------------------------------- |
+| testing    | testing-policy rule                                                                                                 |
+| governance | ESLint, Prettier, Husky, lint-staged, commitlint configs + rule + manifest merge (scripts/devDeps added additively) |
+| mcp        | MCP server config (read-only posture)                                                                               |
+| speckit    | specification-driven development rule + docs                                                                        |
+| typescript | TS/Node scaffold: package.json, tsconfig, src/index, vitest test                                                    |
+| react      | React + Vite scaffold: main.tsx, App, vite.config, tsconfig-jsx                                                     |
+| go         | Go service/CLI scaffold: go.mod, main.go, test                                                                      |
 
 Language capabilities compose, e.g. `base + typescript + react`.
 
