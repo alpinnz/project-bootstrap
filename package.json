@@ -1,6 +1,6 @@
 {
   "name": "project-bootstrap",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Software Project Operating Foundation - create, configure, validate, and evolve software repositories with consistent engineering practices.",
   "type": "module",
   "bin": {
