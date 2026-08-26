@@ -6,7 +6,8 @@ import { renderPlanText } from '../domain/bootstrap-plan.js';
 import { FileSystem } from '../infrastructure/filesystem.js';
 import { GitClient } from '../infrastructure/git.js';
 import { applyPlan, type ApplyReport } from './apply-plan.js';
-import { inspectProject, mergeRequestedCapabilities } from './inspect-project.js';
+import { applyCapabilitySelection } from '../domain/capability.js';
+import { inspectProject } from './inspect-project.js';
 import { generateBootstrapPlan } from './plan-generator.js';
 
 export interface InitializeOptions {
@@ -36,7 +37,7 @@ export async function initializeProject(options: InitializeOptions): Promise<Ini
   if (options.capabilities) {
     project = {
       ...project,
-      capabilities: mergeRequestedCapabilities(project.capabilities, options.capabilities),
+      capabilities: applyCapabilitySelection(project.capabilities, options.capabilities),
     };
   }
 

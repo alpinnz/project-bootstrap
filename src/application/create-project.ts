@@ -10,7 +10,8 @@ import { FileSystem } from '../infrastructure/filesystem.js';
 import { GitClient } from '../infrastructure/git.js';
 import { applyPlan, type ApplyReport } from './apply-plan.js';
 import { generateBootstrapPlan } from './plan-generator.js';
-import { inspectProject, mergeRequestedCapabilities } from './inspect-project.js';
+import { applyCapabilitySelection } from '../domain/capability.js';
+import { inspectProject } from './inspect-project.js';
 
 export interface CreateOptions {
   readonly targetDir: string;
@@ -51,7 +52,7 @@ export async function createProject(options: CreateOptions): Promise<CreateResul
   if (options.capabilities) {
     project = {
       ...project,
-      capabilities: mergeRequestedCapabilities(project.capabilities, options.capabilities),
+      capabilities: applyCapabilitySelection(project.capabilities, options.capabilities),
     };
   }
 

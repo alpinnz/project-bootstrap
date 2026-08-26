@@ -5,6 +5,8 @@
  *
  * This is the core of Design Decision 4: capability over technology hardcoding.
  */
+import type { CapabilityRef } from './project-context.js';
+
 export interface Capability {
   /** Stable identifier, e.g. "base", "typescript", "react", "testing". */
   readonly id: string;
@@ -74,20 +76,37 @@ export function getBuiltinCapability(id: string): Capability | undefined {
  * The returned order follows BUILTIN_CAPABILITIES declaration order, which is
  * also the overlay application order in the template loader.
  */
-export function resolveCapabilities(requested: readonly string[]): string[] {
-  const unknown = requested.filter((id) => !getBuiltinCapability(id));
-  if (unknown.length > 0) {
-    throw new Error(`Unknown capability "${unknown[0]}". Available: ${BUILTIN_CAPABILITIES.map((c) => c.id).join(', ')}.`);
+export function resolveRequestedCapabilities(requested: readonly string[]): string[] {
+  const unknownIds = requested.filter((id) => !getBuiltinCapability(id));
+  if (unknownIds.length > 0) {
+    throw new Error(`Unknown capability "${unknownIds[0]}". Available: ${BUILTIN_CAPABILITIES.map((c) => c.id).join(', ')}.`);
   }
 
-  const resolved = new Set<string>();
-  const addWithDependencies = (id: string): void => {
-    if (resolved.has(id)) return;
-    resolved.add(id);
+  const selected = new Set<string>();
+  const selectWithDependencies = (id: string): void => {
+    if (selected.has(id)) return;
+    selected.add(id);
     const capability = getBuiltinCapability(id);
-    for (const dep of capability?.requires ?? []) addWithDependencies(dep);
+    for (const requiredId of capability?.requires ?? []) selectWithDependencies(requiredId);
   };
-  for (const id of requested) addWithDependencies(id);
+  for (const id of requested) selectWithDependencies(id);
 
-  return BUILTIN_CAPABILITIES.map((c) => c.id).filter((id) => resolved.has(id));
+  return BUILTIN_CAPABILITIES.map((c) => c.id).filter((id) => selected.has(id));
+}
+
+/**
+ * Apply a user's capability selection to a detected capability set: unknown
+ * ids are rejected, `requires` dependencies are pulled in transitively, and
+ * every selected id ends up enabled — both adding new entries and upgrading
+ * already-detected-but-disabled ones.
+ */
+export function applyCapabilitySelection(detected: readonly CapabilityRef[], requested: readonly string[]): CapabilityRef[] {
+  const resolved = resolveRequestedCapabilities(requested);
+  const result: CapabilityRef[] = detected.map((c) => (resolved.includes(c.id) ? { ...c, enabled: true } : c));
+  for (const id of resolved) {
+    if (!result.some((c) => c.id === id)) {
+      result.push({ id, enabled: true });
+    }
+  }
+  return result;
 }

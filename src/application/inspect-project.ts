@@ -3,7 +3,6 @@
  * detecting tooling and inspecting existing foundation files.
  */
 import * as path from 'node:path';
-import { resolveCapabilities } from '../domain/capability.js';
 import type { ProjectContext, ProjectRecord } from '../domain/project-context.js';
 import { GitClient } from '../infrastructure/git.js';
 import type { FileSystem } from '../infrastructure/filesystem.js';
@@ -66,22 +65,4 @@ export async function detectEnabledCapabilities(fs: FileSystem, root: string): P
     enabled.push({ id, enabled: await fs.exists(path.join(root, marker)) });
   }
   return enabled;
-}
-
-/**
- * Merge explicitly requested capabilities into the detected set. Every
- * requested id is forced to enabled=true — both adding new entries and
- * upgrading already-detected-but-disabled ones. Requested ids are resolved
- * first: unknown ids are rejected and `requires` edges are pulled in
- * transitively (e.g. react implies typescript).
- */
-export function mergeRequestedCapabilities(detected: ProjectContext['capabilities'], requested: readonly string[]): ProjectContext['capabilities'] {
-  const resolved = resolveCapabilities(requested);
-  const result: Array<{ id: string; enabled: boolean }> = detected.map((c) => (resolved.includes(c.id) ? { ...c, enabled: true } : c));
-  for (const id of resolved) {
-    if (!result.some((c) => c.id === id)) {
-      result.push({ id, enabled: true });
-    }
-  }
-  return result;
 }
