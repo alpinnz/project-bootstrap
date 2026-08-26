@@ -65,3 +65,29 @@ export const BUILTIN_CAPABILITIES: readonly Capability[] = [
 export function getBuiltinCapability(id: string): Capability | undefined {
   return BUILTIN_CAPABILITIES.find((c) => c.id === id);
 }
+
+/**
+ * Resolve requested capability ids into a complete, ordered set:
+ * - unknown ids are rejected with a clear error (fail fast at the boundary)
+ * - `requires` edges are resolved transitively (react pulls in typescript)
+ *
+ * The returned order follows BUILTIN_CAPABILITIES declaration order, which is
+ * also the overlay application order in the template loader.
+ */
+export function resolveCapabilities(requested: readonly string[]): string[] {
+  const unknown = requested.filter((id) => !getBuiltinCapability(id));
+  if (unknown.length > 0) {
+    throw new Error(`Unknown capability "${unknown[0]}". Available: ${BUILTIN_CAPABILITIES.map((c) => c.id).join(', ')}.`);
+  }
+
+  const resolved = new Set<string>();
+  const addWithDependencies = (id: string): void => {
+    if (resolved.has(id)) return;
+    resolved.add(id);
+    const capability = getBuiltinCapability(id);
+    for (const dep of capability?.requires ?? []) addWithDependencies(dep);
+  };
+  for (const id of requested) addWithDependencies(id);
+
+  return BUILTIN_CAPABILITIES.map((c) => c.id).filter((id) => resolved.has(id));
+}
